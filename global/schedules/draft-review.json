@@ -1,0 +1,15 @@
+{
+  "description": "原稿をローカルLLMに読ませて、見出しだけで筋が通るかを講評する（ollama・無料）",
+  "enabled": true,
+  "after": [
+    {
+      "job": "global/draft-stats",
+      "on": "success"
+    }
+  ],
+  "run": {
+    "type": "command",
+    "command": "if ! command -v ollama >/dev/null 2>&1; then\n  echo 'ollama が見つからないためスキップします。このジョブはローカルLLMを使います'\n  exit 0\nfi\nmodel=\"${SAMPLE_OLLAMA_MODEL:-gemma4:e4b}\"\nif ! ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -qx \"$model\"; then\n  echo \"モデル $model が未取得のためスキップします（ollama pull $model）\"\n  exit 0\nfi\nf=drafts/sample-article.md\n{\n  echo '次の原稿について、見出しだけを読んで筋が通るか、冒頭3行に引きがあるかを日本語で3行以内で講評してください。'\n  echo '---'\n  cat \"$f\"\n} | ollama run \"$model\" 2>/dev/null | perl -pe 's/\\e\\[[0-9;?]*[A-Za-z]//g'"
+  },
+  "timeout": 900
+}

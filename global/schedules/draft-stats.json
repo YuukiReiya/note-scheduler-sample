@@ -1,0 +1,10 @@
+{
+  "description": "原稿の文字数・見出し数・画像プレースホルダの残数を数える",
+  "enabled": true,
+  "trigger": { "cron": "*/10 * * * *" },
+  "run": {
+    "type": "command",
+    "command": "f=drafts/sample-article.md\nchars=$(wc -m < \"$f\" | tr -d ' ')\nheads=$(grep -c '^#' \"$f\" || true)\nimgs=$(grep -c '【画像' \"$f\" || true)\necho \"文字数: $chars / 見出し: $heads / 画像プレースホルダ: $imgs\""
+  },
+  "timeout": 60
+}

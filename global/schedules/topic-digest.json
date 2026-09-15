@@ -1,0 +1,11 @@
+{
+  "description": "直近のコミットから記事ネタの候補を3行で出す（Claude Code を使うため課金される）",
+  "enabled": false,
+  "trigger": { "cron": "10 9 * * 1-5" },
+  "run": {
+    "type": "claude",
+    "prompt": "git log --oneline -20 で直近のコミットを確認し、記事のネタになりそうな変更を3行以内の箇条書きで挙げて。各行は「何をしたか」ではなく「読者に何が伝わるか」で書くこと。",
+    "allowedTools": ["Bash(git log:*)", "Read"]
+  },
+  "timeout": 900
+}

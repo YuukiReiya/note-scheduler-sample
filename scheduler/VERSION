@@ -1,0 +1,3 @@
+source: YuukiReiya/Claude-Config global/scheduler/dispatch.py
+commit: df79635a7ce21e3ed516244db9192d7a37d858b4
+date:   2026-08-29T13:40:52+09:00

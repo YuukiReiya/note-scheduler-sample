@@ -1,0 +1,10 @@
+{
+  "description": "このプロジェクトのノートを数えて、最新のものを表示する（スコープごとに cwd が変わることの確認）",
+  "enabled": true,
+  "trigger": { "cron": "*/15 * * * *" },
+  "run": {
+    "type": "command",
+    "command": "echo \"cwd: $(pwd)\"\nn=$(ls -1 notes/*.md 2>/dev/null | wc -l | tr -d ' ')\necho \"ノート: ${n} 件\"\nlatest=$(ls -1 notes/*.md 2>/dev/null | sort | tail -1)\nif [ -n \"$latest\" ]; then echo \"最新: $latest\"; fi"
+  },
+  "timeout": 60
+}

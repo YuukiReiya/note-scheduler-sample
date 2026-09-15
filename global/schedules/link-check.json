@@ -1,0 +1,10 @@
+{
+  "description": "原稿内のリンク切れを検出する",
+  "enabled": true,
+  "trigger": { "cron": "25 8 * * *" },
+  "run": {
+    "type": "command",
+    "command": "ng=0\nfor f in drafts/*.md; do\n  grep -oE '\\]\\(([^)]+)\\)' \"$f\" | sed -E 's/^\\]\\((.*)\\)$/\\1/' | while read -r t; do\n    case \"$t\" in http*) continue ;; esac\n    if [ ! -e \"$(dirname \"$f\")/$t\" ]; then echo \"$f: リンク切れ $t\"; exit 1; fi\n  done || ng=1\ndone\nif [ \"$ng\" -ne 0 ]; then exit 1; fi\necho 'リンク切れはありません'"
+  },
+  "timeout": 60
+}

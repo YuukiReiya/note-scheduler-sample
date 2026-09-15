@@ -1,0 +1,10 @@
+{
+  "description": "公開前チェック。未解決の画像プレースホルダとローカル絶対パスの残存を検出する",
+  "enabled": true,
+  "trigger": { "cron": "5 8 * * *" },
+  "run": {
+    "type": "command",
+    "command": "ng=0\nfor f in drafts/*.md; do\n  n=$(grep -c '【画像' \"$f\" || true)\n  if [ \"$n\" -gt 0 ]; then echo \"$f: 未解決の画像プレースホルダ $n 件\"; ng=1; fi\n  if grep -qE '/Users/[a-zA-Z0-9_.-]+/' \"$f\"; then echo \"$f: ローカル絶対パスが残っています\"; ng=1; fi\ndone\nif [ \"$ng\" -ne 0 ]; then echo '公開前に解消してください'; exit 1; fi\necho '公開可能な状態です'"
+  },
+  "timeout": 60
+}
